@@ -28,7 +28,7 @@ const TripsPage = async () => {
 
   const reservations = await getReservations({ userId: currentUser.id });
   const reservation_todo = await getTodoReservation({ userId: currentUser.id });
- const reservation_restaurant = await getRestaurantReservation({ userId: currentUser.id });
+//  const reservation_restaurant = await getRestaurantReservation({ userId: currentUser.id });
   if (reservations.length === 0 && reservation_todo.length === 0) {
     return (
       <ClientOnly>
@@ -54,10 +54,10 @@ const TripsPage = async () => {
         currentUser={currentUser}
       />
 
-      <Trips_restaurant
+      {/* <Trips_restaurant
         reservations={reservation_restaurant}
         currentUser={currentUser}
-      />
+      /> */}
       </div>
      
     </ClientOnly>
