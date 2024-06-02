@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from "react";
 
-import useRentModal from '@/app/hooks/useRentModal';
+import useTodoModal from '@/app/hooks/useTodoModal';
 
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
@@ -28,14 +28,13 @@ enum STEPS {
   INFO = 2,
   IMAGES = 3,
   DESCRIPTION = 4,
-  Food = 5,
-  PRICE = 6,
+  PRICE = 5,
   
 }
 
-const RentModal = () => {
+const TodoModal = () => {
   const router = useRouter();
-  const rentModal = useRentModal();
+  const todoModal = useTodoModal();
 
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
@@ -54,8 +53,6 @@ const RentModal = () => {
       category: '',
       location: null,
       guestCount: 1,
-      roomCount: 1,
-      bathroomCount: 1,
       imageSrc: '',
       price: 1,
       title: '',
@@ -67,10 +64,7 @@ const RentModal = () => {
   const location = watch('location');
   const category = watch('category');
   const guestCount = watch('guestCount');
-  const roomCount = watch('roomCount');
-  const bathroomCount = watch('bathroomCount');
   const imageSrc = watch('imageSrc');
-  const food_list = watch('Foood_list');
 
   const Map = useMemo(() => dynamic(() => import('../Map'), { 
     ssr: false 
@@ -100,13 +94,13 @@ const RentModal = () => {
     
     setIsLoading(true);
 
-    axios.post('/api/listings', data)
+    axios.post('/api/todo', data)
     .then(() => {
-      toast.success('Listing created!');
+      toast.success('Activity created!');
       router.refresh();
       reset();
       setStep(STEPS.CATEGORY)
-      rentModal.onClose();
+      todoModal.onClose();
     })
     .catch(() => {
       toast.error('Something went wrong.');
@@ -192,20 +186,7 @@ const RentModal = () => {
           title="Guests" 
           subtitle="How many guests do you allow?"
         />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('roomCount', value)}
-          value={roomCount}
-          title="Rooms" 
-          subtitle="How many rooms do you have?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('bathroomCount', value)}
-          value={bathroomCount}
-          title="Bathrooms" 
-          subtitle="How many bathrooms do you have?"
-        />
+        
       </div>
     )
   }
@@ -252,36 +233,7 @@ const RentModal = () => {
       </div>
     )
   }
-  if (step === STEPS.Food) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading
-          title="Add some food option to your place"
-          subtitle="What amenitis do you have?"
-        />
-        <Counter 
-          onChange={(value) => setCustomValue('Breakfast', value)}
-          value={guestCount}
-          title="breakfast" 
-          subtitle="Pricing for breakfast?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('lunch', value)}
-          value={roomCount}
-          title="lunch" 
-          subtitle="Pricing for Lunch?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('dinner', value)}
-          value={bathroomCount}
-          title="Dinner" 
-          subtitle="Pricing for Dinner?"
-        />
-      </div>
-    )
-  }
+ 
   if (step === STEPS.PRICE) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -306,16 +258,16 @@ const RentModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={rentModal.isOpen}
-      title="List your home!"
+      isOpen={todoModal.isOpen}
+      title="List a activity"
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
-      onClose={rentModal.onClose}
+      onClose={todoModal.onClose}
       body={bodyContent}
     />
   );
 }
 
-export default RentModal;
+export default TodoModal;

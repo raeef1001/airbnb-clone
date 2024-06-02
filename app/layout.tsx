@@ -11,10 +11,14 @@ import ToasterProvider from '@/app/providers/ToasterProvider';
 import './globals.css'
 import ClientOnly from './components/ClientOnly';
 import getCurrentUser from './actions/getCurrentUser';
+import Footer from './components/footer';
+import GuideModal from './components/modals/GuideModal';
+import TodoModal from './components/modals/TodoModal';
+import RestaurantModal from './components/modals/RestaurantModal';
 
 export const metadata = {
-  title: 'Airbnb',
-  description: 'Airbnb Clone',
+  title: 'Easy Stay',
+  description: 'Easy Stay',
 }
 
 const font = Nunito({ 
@@ -37,11 +41,16 @@ export default async function RootLayout({
           <RegisterModal />
           <SearchModal />
           <RentModal />
+          <GuideModal />
+          <TodoModal />
+          <RestaurantModal />
           <Navbar currentUser={currentUser} />
+          
         </ClientOnly>
         <div className="pb-20 pt-28">
           {children}
         </div>
+        <Footer />
       </body>
     </html>
   )

@@ -5,10 +5,8 @@ import Select from 'react-select'
 import useCountries from '@/app/hooks/useCountries';
 
 export type CountrySelectValue = {
-  flag: string;
   label: string;
   latlng: number[],
-  region: string;
   value: string
 }
 
@@ -34,11 +32,11 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
         formatOptionLabel={(option: any) => (
           <div className="
           flex flex-row items-center gap-3">
-            <div>{option.flag}</div>
+            {/* <div>{option.flag}</div> */}
             <div>
               {option.label},
               <span className="text-neutral-500 ml-1">
-                {option.region}
+                {/* {option.region} */}
               </span>
             </div>
           </div>

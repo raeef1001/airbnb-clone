@@ -5,18 +5,19 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { SafeReservation, SafeUser } from "@/app/types";
+import { SafeTodoReservation, SafeUser } from "@/app/types";
 
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
+import TodoCard from "../components/todo/TodoCard";
 
 interface TripsClientProps {
-  reservations: SafeReservation[],
+  reservations: SafeTodoReservation[],
   currentUser?: SafeUser | null,
 }
 
-const TripsClient: React.FC<TripsClientProps> = ({
+const Trips_activity: React.FC<TripsClientProps> = ({
   reservations,
   currentUser
 }) => {
@@ -26,14 +27,14 @@ const TripsClient: React.FC<TripsClientProps> = ({
   const onCancel = useCallback((id: string) => {
     setDeletingId(id);
 
-    axios.delete(`/api/reservations/${id}`)
+    axios.delete(`/api/todoReservation/${id}`)
     .then(() => {
       toast.success('Reservation cancelled');
       router.refresh();
     })
     .catch((error) => {
       toast.error(error?.response?.data?.error)
-     
+      console.log(error);
     })
     .finally(() => {
       setDeletingId('');
@@ -42,10 +43,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
 
   return (
     <Container>
-      <Heading
-        title="Trips"
-        subtitle="Where you've been and where you're going"
-      />
+     
       <div 
         className="
           mt-10
@@ -60,9 +58,9 @@ const TripsClient: React.FC<TripsClientProps> = ({
         "
       >
         {reservations.map((reservation: any) => (
-          <ListingCard
+          <TodoCard
             key={reservation.id}
-            data={reservation.listing}
+            data={reservation.todo}
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}
@@ -76,4 +74,4 @@ const TripsClient: React.FC<TripsClientProps> = ({
    );
 }
  
-export default TripsClient;
+export default Trips_activity;

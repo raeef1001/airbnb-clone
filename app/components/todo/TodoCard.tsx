@@ -1,5 +1,5 @@
 'use client';
-
+ // @ts-nocheck 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
@@ -9,6 +9,8 @@ import useCountries from "@/app/hooks/useCountries";
 import { 
   SafeListing, 
   SafeReservation, 
+  SafeTodo, 
+  SafeTodoReservation, 
   SafeUser 
 } from "@/app/types";
 
@@ -17,8 +19,8 @@ import Button from "../Button";
 import ClientOnly from "../ClientOnly";
 
 interface ListingCardProps {
-  data: SafeListing;
-  reservation?: SafeReservation;
+  data: SafeTodo;
+  reservation?: SafeTodoReservation;
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
@@ -26,7 +28,7 @@ interface ListingCardProps {
   currentUser?: SafeUser | null
 };
 
-const ListingCard: React.FC<ListingCardProps> = ({
+const TodoCard: React.FC<ListingCardProps> = ({
   data,
   reservation,
   onAction,
@@ -72,7 +74,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div 
-      onClick={() => router.push(`/listings/${data.id}`)} 
+      onClick={() => router.push(`/activities/${data.id}`)} 
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
@@ -135,4 +137,4 @@ const ListingCard: React.FC<ListingCardProps> = ({
    );
 }
  
-export default ListingCard;
+export default TodoCard;

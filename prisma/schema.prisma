@@ -24,6 +24,8 @@ model User {
   accounts Account[]
   listings Listing[]
   reservations Reservation[]
+  todos Todo[]
+  reservation_todos Reservation_todo[]
 }
 
 model Account {
@@ -62,6 +64,21 @@ model Listing {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations Reservation[]
 }
+model Todo {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  imageSrc String
+  createdAt DateTime @default(now())
+  category  String
+  guestCount Int
+  locationValue String
+  userId String @db.ObjectId
+  price Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservation_todos Reservation_todo[]
+}
 
 model Reservation {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -74,4 +91,16 @@ model Reservation {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+model Reservation_todo {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  todo_id String @db.ObjectId  
+  startDate DateTime
+  endDate DateTime
+  totalPrice Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  todo Todo @relation(fields: [todo_id], references: [id], onDelete: Cascade)
 }

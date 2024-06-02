@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from "react";
 
-import useRentModal from '@/app/hooks/useRentModal';
+import useGuideModal from '@/app/hooks/useGuideModal';
 
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
@@ -33,9 +33,9 @@ enum STEPS {
   
 }
 
-const RentModal = () => {
+const GuideModal = () => {
   const router = useRouter();
-  const rentModal = useRentModal();
+  const guideModal = useGuideModal();
 
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
@@ -106,7 +106,7 @@ const RentModal = () => {
       router.refresh();
       reset();
       setStep(STEPS.CATEGORY)
-      rentModal.onClose();
+      guideModal.onClose();
     })
     .catch(() => {
       toast.error('Something went wrong.');
@@ -306,16 +306,16 @@ const RentModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={rentModal.isOpen}
+      isOpen={guideModal.isOpen}
       title="List your home!"
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
-      onClose={rentModal.onClose}
+      onClose={guideModal.onClose}
       body={bodyContent}
     />
   );
 }
 
-export default RentModal;
+export default GuideModal;

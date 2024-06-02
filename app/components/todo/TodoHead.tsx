@@ -16,7 +16,7 @@ interface ListingHeadProps {
   currentUser?: SafeUser | null
 }
 
-const ListingHead: React.FC<ListingHeadProps> = ({
+const TodoHead: React.FC<ListingHeadProps> = ({
   title,
   locationValue,
   imageSrc,
@@ -64,4 +64,4 @@ const ListingHead: React.FC<ListingHeadProps> = ({
    );
 }
  
-export default ListingHead;
+export default TodoHead;

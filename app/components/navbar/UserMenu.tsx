@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useRentModal from "@/app/hooks/useRentModal";
+import useGuideModal from "@/app/hooks/useGuideModal";
+import useTodoModal from "@/app/hooks/useTodoModal";
+import useRestaurantModal from "@/app/hooks/useRestaurantModal";
 import { SafeUser } from "@/app/types";
 
 import MenuItem from "./MenuItem";
@@ -25,6 +28,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
+  const restaurantModal = useRestaurantModal();
+  const todoModal = useTodoModal();
+  const guideModal = useGuideModal();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -58,7 +64,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
             cursor-pointer
           "
         >
-          Airbnb your home
+          List your home
         </div>
         <div 
         onClick={toggleOpen}
@@ -119,8 +125,20 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   onClick={() => router.push('/properties')}
                 />
                 <MenuItem 
-                  label="Airbnb your home" 
+                  label="List your home" 
                   onClick={rentModal.onOpen}
+                />
+                 <MenuItem 
+                  label="List restaurant" 
+                  onClick={restaurantModal.onOpen}
+                />
+                 <MenuItem 
+                  label="List todo" 
+                  onClick={todoModal.onOpen}
+                />
+                 <MenuItem 
+                  label="List guide" 
+                  onClick={guideModal.onOpen}
                 />
                 <hr />
                 <MenuItem 
