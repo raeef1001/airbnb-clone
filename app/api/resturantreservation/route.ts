@@ -15,22 +15,22 @@ export async function POST(
 
   const body = await request.json();
   const { 
-    todo_id,
+    listingId,
     startDate,
     endDate,
     totalPrice
    } = body;
 
-   if (!todo_id || !startDate || !endDate || !totalPrice) {
+   if (!listingId || !startDate || !endDate || !totalPrice) {
     return NextResponse.error();
   }
 
-  const listingAndReservation = await prisma.reservation_todo.update({
+  const listingAndReservation = await prisma.restaurant_reservation.update({
     where: {
-      id: todo_id
+      id: listingId
     },
     data: {
-      reservation_todos: {
+        restaurant_reservations: {
         create: {
           userId: currentUser.id,
           startDate,

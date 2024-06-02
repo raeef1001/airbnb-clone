@@ -44,10 +44,10 @@ export default async function RootLayout({
           <GuideModal />
           <TodoModal />
           <RestaurantModal />
-          <Navbar currentUser={currentUser} />
+          <Navbar currentUser={currentUser}/>
           
         </ClientOnly>
-        <div className="pb-20 pt-28">
+        <div className="pb-20 pt-[14%]">
           {children}
         </div>
         <Footer />

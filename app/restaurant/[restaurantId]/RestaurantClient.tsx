@@ -8,13 +8,15 @@ import { useRouter } from "next/navigation";
 import { differenceInDays, eachDayOfInterval } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import { SafeListing, SafeReservation, SafeRestaurant, SafeRestaurantReservation, SafeTodo, SafeTodoReservation, SafeUser } from "@/app/types";
 
 import Container from "@/app/components/Container";
 import { categories } from "@/app/components/navbar/Categories";
-import ListingHead from "@/app/components/listings/ListingHead";
-import ListingInfo from "@/app/components/listings/ListingInfo";
-import ListingReservation from "@/app/components/listings/ListingReservation";
+import TodoHead from "@/app/components/todo/TodoHead";
+import TodoInfo from "@/app/components/todo/TodoInfo";
+import TodoReservation from "@/app/components/todo/TodoReservation";
+import RestaurantInfo from "@/app/components/restaurant/RestaurantInfo";
+import RestaurantReservation from "@/app/components/restaurant/RestaurantReservation";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -23,17 +25,17 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  reservations?: SafeReservation[];
-  listing: SafeListing & {
+  Restaurant_Reservation?: SafeRestaurantReservation[];
+  Restaurant: SafeRestaurant & {
     user: SafeUser;
   };
   currentUser?: SafeUser | null;
 }
 
-const ListingClient: React.FC<ListingClientProps> = ({
-  listing,
-  reservations = [],
-  currentUser
+const RestaurantClient: React.FC<ListingClientProps> = ({ 
+    Restaurant_Reservation = [], 
+    Restaurant, 
+    currentUser
 }) => {
   const loginModal = useLoginModal();
   const router = useRouter();
@@ -41,7 +43,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
-    reservations.forEach((reservation: any) => {
+    Restaurant_Reservation.forEach((reservation: any) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate)
@@ -51,15 +53,15 @@ const ListingClient: React.FC<ListingClientProps> = ({
     });
 
     return dates;
-  }, [reservations]);
+  }, [Restaurant_Reservation]);
 
   const category = useMemo(() => {
      return categories.find((items) => 
-      items.label === listing.category);
-  }, [listing.category]);
+      items.label === Restaurant.title);
+  }, [Restaurant.title]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing.price);
+  const [totalPrice, setTotalPrice] = useState(Restaurant.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const onCreateReservation = useCallback(() => {
@@ -68,14 +70,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
       }
       setIsLoading(true);
 
-      axios.post('/api/reservations', {
+      axios.post('/api/resturantreservation', {
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        listingId: listing?.id
+        Restaurant_id: Restaurant?.id
       })
       .then(() => {
-        toast.success('Listing reserved!');
+        toast.success('activity reserved!');
         setDateRange(initialDateRange);
         router.push('/trips');
       })
@@ -89,7 +91,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   [
     totalPrice, 
     dateRange, 
-    listing?.id,
+    Restaurant?.id,
     router,
     currentUser,
     loginModal
@@ -102,13 +104,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
         dateRange.startDate
       );
       
-      if (dayCount && listing.price) {
-        setTotalPrice(dayCount * listing.price);
+      if (dayCount && Restaurant.price) {
+        setTotalPrice(dayCount * Restaurant.price);
       } else {
-        setTotalPrice(listing.price);
+        setTotalPrice(Restaurant.price);
       }
     }
-  }, [dateRange, listing.price]);
+  }, [dateRange, Restaurant.price]);
 
   return ( 
     <Container>
@@ -116,15 +118,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
         className="
           max-w-screen-lg 
           mx-auto
-          mt-[8%]
         "
       >
         <div className="flex flex-col gap-6">
-          <ListingHead
-            title={listing.title}
-            imageSrc={listing.imageSrc}
-            locationValue={listing.locationValue}
-            id={listing.id}
+          <TodoHead
+            title={Restaurant.title}
+            imageSrc={Restaurant.imageSrc}
+            locationValue={Restaurant.locationValue}
+            id={Restaurant.id}
             currentUser={currentUser}
           />
           <div 
@@ -136,14 +137,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
               mt-6
             "
           >
-            <ListingInfo
-              user={listing.user}
+            <RestaurantInfo
+              user={Restaurant.user}
               category={category}
-              description={listing.description}
-              roomCount={listing.roomCount}
-              guestCount={listing.guestCount}
-              bathroomCount={listing.bathroomCount}
-              locationValue={listing.locationValue}
+              description={Restaurant.description}
+            
+              guestCount={Restaurant.guestCount}
+            
+              locationValue={Restaurant.locationValue}
             />
             <div 
               className="
@@ -153,8 +154,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 md:col-span-3
               "
             >
-              <ListingReservation
-                price={listing.price}
+              <RestaurantReservation
+                price={Restaurant.price}
                 totalPrice={totalPrice}
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
@@ -170,4 +171,4 @@ const ListingClient: React.FC<ListingClientProps> = ({
    );
 }
  
-export default ListingClient;
+export default RestaurantClient;

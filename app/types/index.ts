@@ -1,4 +1,4 @@
-import { Listing, Reservation, Reservation_todo, Todo, User } from "@prisma/client";
+import { Listing, Reservation,Restaurant,Restaurant_reservation, Reservation_todo, Todo, User } from "@prisma/client";
 
 export type SafeListing = Omit<Listing, "createdAt"> & {
   createdAt: string;
@@ -6,7 +6,9 @@ export type SafeListing = Omit<Listing, "createdAt"> & {
 export type SafeTodo = Omit<Todo, "createdAt"> & {
   createdAt: string;
 };
-
+export type SafeRestaurant = Omit<Restaurant, "createdAt"> & {
+  createdAt: string;
+};
 
 export type SafeReservation = Omit<
   Reservation, 
@@ -19,6 +21,15 @@ export type SafeReservation = Omit<
 };
 export type SafeTodoReservation = Omit<
 Reservation_todo, 
+  "createdAt" | "startDate" | "endDate" | "listing"
+> & {
+  createdAt: string;
+  startDate: string;
+  endDate: string;
+  todo: SafeTodo;
+};
+export type SafeRestaurantReservation = Omit<
+Restaurant_reservation, 
   "createdAt" | "startDate" | "endDate" | "listing"
 > & {
   createdAt: string;

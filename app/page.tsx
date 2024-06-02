@@ -8,9 +8,14 @@ import getListings, {
 import getTodos, { 
   ITodoParams
 } from "@/app/actions/getTodos";
+import getRestaurants, { 
+  ITodoParams as ITodoParamss
+} from "@/app/actions/getRestaurants";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "./components/ClientOnly";
 import TodoCard from "./components/todo/TodoCard";
+
+import RestaurantCard from "./components/restaurant/RestaurantCard";
 
 interface HomeProps {
   searchParams: IListingsParams,
@@ -20,6 +25,7 @@ interface HomeProps {
 const Home = async ({ searchParams }: HomeProps) => {
   const listings = await getListings(searchParams);
   const todos = await getTodos({} as ITodoParams);
+  const Restaurants = await getRestaurants({} as ITodoParamss);
   const currentUser = await getCurrentUser();
 
   if (listings.length === 0) {
@@ -94,8 +100,8 @@ const Home = async ({ searchParams }: HomeProps) => {
             gap-8
           "
         >
-          {listings.map((listing: any) => (
-            <ListingCard
+          {Restaurants.map((listing: any) => (
+            <RestaurantCard
               currentUser={currentUser}
               key={listing.id}
               data={listing}

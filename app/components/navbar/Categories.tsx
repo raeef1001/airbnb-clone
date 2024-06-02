@@ -1,137 +1,55 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import { TbBeach, TbMountain, TbPool } from 'react-icons/tb';
-import { 
-  GiBarn, 
-  GiBoatFishing, 
-  GiCactus, 
-  GiCastle, 
-  GiCaveEntrance, 
-  GiForestCamp, 
-  GiIsland,
-  GiWindmill
-} from 'react-icons/gi';
-import { FaSkiing } from 'react-icons/fa';
-import { BsSnow } from 'react-icons/bs';
-import { IoDiamond } from 'react-icons/io5';
-import { MdOutlineVilla } from 'react-icons/md';
-
-import CategoryBox from "../CategoryBox";
+import { usePathname } from 'next/navigation';
+import CategoryBox from '../CategoryBox';
 import Container from '../Container';
 
-
 export const categories = [
-  {
-    label: 'Beach',
-    icon: TbBeach,
-    description: 'This property is close to the beach!',
-  },
-  {
-    label: 'Windmills',
-    icon: GiWindmill,
-    description: 'This property is has windmills!',
-  },
-  {
-    label: 'Modern',
-    icon: MdOutlineVilla,
-    description: 'This property is modern!'
-  },
-  {
-    label: 'Countryside',
-    icon: TbMountain,
-    description: 'This property is in the countryside!'
-  },
-  {
-    label: 'Pools',
-    icon: TbPool,
-    description: 'This is property has a beautiful pool!'
-  },
-  {
-    label: 'Islands',
-    icon: GiIsland,
-    description: 'This property is on an island!'
-  },
-  {
-    label: 'Lake',
-    icon: GiBoatFishing,
-    description: 'This property is near a lake!'
-  },
-  {
-    label: 'Skiing',
-    icon: FaSkiing,
-    description: 'This property has skiing activies!'
-  },
-  {
-    label: 'Castles',
-    icon: GiCastle,
-    description: 'This property is an ancient castle!'
-  },
-  {
-    label: 'Caves',
-    icon: GiCaveEntrance,
-    description: 'This property is in a spooky cave!'
-  },
-  {
-    label: 'Camping',
-    icon: GiForestCamp,
-    description: 'This property offers camping activities!'
-  },
-  {
-    label: 'Arctic',
-    icon: BsSnow,
-    description: 'This property is in arctic environment!'
-  },
-  {
-    label: 'Desert',
-    icon: GiCactus,
-    description: 'This property is in the desert!'
-  },
-  {
-    label: 'Barns',
-    icon: GiBarn,
-    description: 'This property is in a barn!'
-  },
-  {
-    label: 'Lux',
-    icon: IoDiamond,
-    description: 'This property is brand new and luxurious!'
-  }
-]
+  { label: 'Search All', link: '' }, // link is empty string for home page
+  { label: 'Hotel', link: 'hotel' },
+  { label: 'Things To Do', link: 'activity' },
+  { label: 'Restaurant', link: 'restaurant' },
+  { label: 'Tour Guide', link: 'tourguide' },
+];
 
 const Categories = () => {
-  const params = useSearchParams();
-  const category = params?.get('category');
   const pathname = usePathname();
   const isMainPage = pathname === '/';
 
-  if (!isMainPage) {
-    return null;
-  }
-
   return (
     <Container>
-      <div
-        className="
-          pt-4
-          flex 
-          flex-row 
-          items-center 
-          justify-between
-          overflow-x-auto
-        "
-      >
-        {categories.map((item) => (
-          <CategoryBox 
-            key={item.label}
-            label={item.label}
-            icon={item.icon}
-            selected={category === item.label}
-          />
-        ))}
+      <div>
+        <div>
+          <h2 className="text-6xl font-bold text-neutral-900 w-[25%] mx-auto mt-12 mb-4">
+            Plan Your Trip
+          </h2>
+        </div>
+        <div
+          className="
+            pt-4
+            
+            flex 
+            flex-row 
+            items-center 
+            justify-center
+            overflow-x-auto
+            w-[60%]
+            gap-16
+            mx-auto
+          "
+        >
+          {categories.map((item) => (
+            <CategoryBox
+              key={item.label}
+              label={item.label}
+              link={item.link}
+              selected={isMainPage ? item.link === '' : pathname === `/${item.link}`}
+            />
+          ))}
+        </div>
       </div>
     </Container>
   );
 }
- 
+
 export default Categories;

@@ -100,7 +100,7 @@ const RestaurantModal = () => {
     
     setIsLoading(true);
 
-    axios.post('/api/listings', data)
+    axios.post('/api/restaurant', data)
     .then(() => {
       toast.success('Listing created!');
       router.refresh();
