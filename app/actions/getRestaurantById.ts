@@ -1,41 +1,41 @@
-// @ts-ignore 
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
   restaurant_id?: string;
 }
 
-export default async function getrestauraById(
-  params: IParams
-) {
+export default async function getRestaurantById(params: IParams) {
   try {
     const { restaurant_id } = params;
 
-    const restaura = await prisma.restaurant.findUnique({
+    if (!restaurant_id) {
+      throw new Error("restaurant_id is required");
+    }
+
+    const restaurant = await prisma.restaurant.findUnique({
       where: {
         id: restaurant_id,
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     });
 
-    if (!restaura) {
+    if (!restaurant) {
       return null;
     }
 
     return {
-      ...restaura,
-      createdAt: restaura.createdAt.toString(),
+      ...restaurant,
+      createdAt: restaurant.createdAt.toString(),
       user: {
-        ...restaura.user,
-        createdAt: restaura.user.createdAt.toString(),
-        updatedAt: restaura.user.updatedAt.toString(),
-        emailVerified: 
-          restaura.user.emailVerified?.toString() || null,
-      }
+        ...restaurant.user,
+        createdAt: restaurant.user.createdAt.toString(),
+        updatedAt: restaurant.user.updatedAt.toString(),
+        emailVerified: restaurant.user.emailVerified?.toString() || null,
+      },
     };
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 }
