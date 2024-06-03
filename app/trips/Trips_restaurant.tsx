@@ -5,19 +5,18 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { SafeTodoReservation, SafeUser } from "@/app/types";
+import { SafeRestaurantReservation, SafeUser } from "@/app/types";
 
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
-import TodoCard from "../components/todo/TodoCard";
 
 interface TripsClientProps {
-  reservations: SafeTodoReservation[],
+  reservations: SafeRestaurantReservation[],
   currentUser?: SafeUser | null,
 }
 
-const Trips_activity: React.FC<TripsClientProps> = ({
+const Trips_restaurant: React.FC<TripsClientProps> = ({
   reservations,
   currentUser
 }) => {
@@ -27,14 +26,14 @@ const Trips_activity: React.FC<TripsClientProps> = ({
   const onCancel = useCallback((id: string) => {
     setDeletingId(id);
 
-    axios.delete(`/api/todoReservation/${id}`)
+    axios.delete(`/api/restaurantreservation/${id}`)
     .then(() => {
       toast.success('Reservation cancelled');
       router.refresh();
     })
     .catch((error) => {
       toast.error(error?.response?.data?.error)
-      console.log(error);
+     
     })
     .finally(() => {
       setDeletingId('');
@@ -43,12 +42,14 @@ const Trips_activity: React.FC<TripsClientProps> = ({
 
   return (
     <Container>
-     
-     <div>
+      <div className="mt-[6%]">
+      
       <div>
-        <div className="text-3xl p-3 mt-12">Your activities</div>
-      </div>
-     <div 
+          <h1 className="text-3xl mt-12 font-semibold text-gray-800">
+            Restaurant Booking
+          </h1>
+        </div>
+      <div 
         className="
           mt-10
           grid 
@@ -62,9 +63,9 @@ const Trips_activity: React.FC<TripsClientProps> = ({
         "
       >
         {reservations.map((reservation: any) => (
-          <TodoCard
+          <ListingCard
             key={reservation.id}
-            data={reservation.todo}
+            data={reservation.listing}
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}
@@ -74,9 +75,9 @@ const Trips_activity: React.FC<TripsClientProps> = ({
           />
         ))}
       </div>
-     </div>
+      </div>
     </Container>
    );
 }
  
-export default Trips_activity;
+export default Trips_restaurant;

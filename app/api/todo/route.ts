@@ -34,7 +34,6 @@ export async function POST(
       title,
       description,
       imageSrc,
-      category,
       guestCount,
       locationValue: location.value,
       price: parseInt(price, 10),

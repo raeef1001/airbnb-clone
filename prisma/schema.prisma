@@ -56,7 +56,6 @@ model Listing {
   description String
   imageSrc String
   createdAt DateTime @default(now())
-  category  String
   roomCount Int
   bathroomCount Int
   guestCount Int
@@ -99,7 +98,6 @@ model Todo {
   description String
   imageSrc String
   createdAt DateTime @default(now())
-  category  String
   guestCount Int
   locationValue String
   userId String @db.ObjectId

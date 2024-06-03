@@ -23,13 +23,13 @@ import Input from '../inputs/Input';
 import Heading from '../Heading';
 
 enum STEPS {
-  CATEGORY = 0,
-  LOCATION = 1,
-  INFO = 2,
-  IMAGES = 3,
-  DESCRIPTION = 4,
-  Food = 5,
-  PRICE = 6,
+
+  LOCATION = 0,
+  INFO = 1,
+  IMAGES = 2,
+  DESCRIPTION = 3,
+  Food = 4,
+  PRICE = 5,
   
 }
 
@@ -38,7 +38,7 @@ const RentModal = () => {
   const rentModal = useRentModal();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState(STEPS.CATEGORY);
+  const [step, setStep] = useState(STEPS.LOCATION);
 
   const { 
     register, 
@@ -51,7 +51,7 @@ const RentModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      category: '',
+ 
       location: null,
       guestCount: 1,
       roomCount: 1,
@@ -65,7 +65,7 @@ const RentModal = () => {
   });
 
   const location = watch('location');
-  const category = watch('category');
+
   const guestCount = watch('guestCount');
   const roomCount = watch('roomCount');
   const bathroomCount = watch('bathroomCount');
@@ -105,7 +105,7 @@ const RentModal = () => {
       toast.success('Listing created!');
       router.refresh();
       reset();
-      setStep(STEPS.CATEGORY)
+      setStep(STEPS.LOCATION)
       rentModal.onClose();
     })
     .catch(() => {
@@ -125,7 +125,7 @@ const RentModal = () => {
   }, [step]);
 
   const secondaryActionLabel = useMemo(() => {
-    if (step === STEPS.CATEGORY) {
+    if (step === STEPS.LOCATION) {
       return undefined
     }
 
@@ -135,49 +135,18 @@ const RentModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Which of these best describes your place?"
-        subtitle="Pick a category"
+        title="Where is your place located?"
+        subtitle="Help guests find you!"
       />
-      <div 
-        className="
-          grid 
-          grid-cols-1 
-          md:grid-cols-2 
-          gap-3
-          max-h-[50vh]
-          overflow-y-auto
-        "
-      >
-        {categories.map((item) => (
-          <div key={item.label} className="col-span-1">
-            <CategoryInput
-              onClick={(category) => 
-                setCustomValue('category', category)}
-              selected={category === item.label}
-              label={item.label}
-              icon={item.icon}
-            />
-          </div>
-        ))}
-      </div>
+      <CountrySelect 
+        value={location} 
+        onChange={(value) => setCustomValue('location', value)} 
+      />
+      <Map center={location?.latlng} />
     </div>
-  )
+  );
 
-  if (step === STEPS.LOCATION) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading
-          title="Where is your place located?"
-          subtitle="Help guests find you!"
-        />
-        <CountrySelect 
-          value={location} 
-          onChange={(value) => setCustomValue('location', value)} 
-        />
-        <Map center={location?.latlng} />
-      </div>
-    );
-  }
+  
 
   if (step === STEPS.INFO) {
     bodyContent = (
@@ -311,7 +280,7 @@ const RentModal = () => {
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
+      secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
       onClose={rentModal.onClose}
       body={bodyContent}
     />

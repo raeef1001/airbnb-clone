@@ -12,7 +12,7 @@ import getRestaurantById from "@/app/actions/getRestaurantById";
 import getRestaurantReservation from "@/app/actions/getRestaurantReservation";
 
 interface IParams {
-  Todo_id?: string;
+  restaurant_id?: string;
 }
 
 const RestaurantPage = async ({params}) => {

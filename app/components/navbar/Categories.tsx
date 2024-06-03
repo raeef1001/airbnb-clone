@@ -8,8 +8,8 @@ export const categories = [
   { label: 'Search All', link: '' }, // link is empty string for home page
   { label: 'Hotel', link: 'hotel' },
   { label: 'Things To Do', link: 'activity' },
-  { label: 'Restaurant', link: 'restaurant' },
-  { label: 'Tour Guide', link: 'tourguide' },
+  { label: 'Restaurant', link: 'restaurantpage' },
+
 ];
 
 const Categories = () => {

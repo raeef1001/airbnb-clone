@@ -28,7 +28,7 @@ export async function POST(
     }
   });
 
-  const restaurant = await prisma.restaurant.create({
+  const todo = await prisma.restaurant.create({
     data: {
       title,
       description,
@@ -40,5 +40,5 @@ export async function POST(
     }
   });
 
-  return NextResponse.json(restaurant);
+  return NextResponse.json(todo);
 }

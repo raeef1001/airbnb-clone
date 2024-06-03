@@ -1,5 +1,5 @@
 'use client';
-
+// @ts-ignore
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -53,10 +53,10 @@ const TodoClient: React.FC<ListingClientProps> = ({
     return dates;
   }, [Reservation_todo]);
 
-  const category = useMemo(() => {
-     return categories.find((items) => 
-      items.label === Todo.category);
-  }, [Todo.category]);
+  // const category = useMemo(() => {
+  //    return categories.find((items) => 
+  //     items.label === Todo.category);
+  // }, [Todo.category]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(Todo.price);
@@ -115,7 +115,7 @@ const TodoClient: React.FC<ListingClientProps> = ({
       <div 
         className="
           max-w-screen-lg 
-          mx-auto
+          mx-auto mt-[6%]
         "
       >
         <div className="flex flex-col gap-6">

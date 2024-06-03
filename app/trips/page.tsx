@@ -9,6 +9,8 @@ import getReservations from "@/app/actions/getReservations";
 import TripsClient from "./TripsClient";
 import Trips_activity from "./Trips_activity";
 import getTodoReservation from "../actions/getTodoReservation";
+import Trips_restaurant from "./Trips_restaurant";
+import getRestaurantReservation from "../actions/getRestaurantReservation";
 
 const TripsPage = async () => {
   const currentUser = await getCurrentUser();
@@ -26,7 +28,7 @@ const TripsPage = async () => {
 
   const reservations = await getReservations({ userId: currentUser.id });
   const reservation_todo = await getTodoReservation({ userId: currentUser.id });
-
+ const reservation_restaurant = await getRestaurantReservation({ userId: currentUser.id });
   if (reservations.length === 0 && reservation_todo.length === 0) {
     return (
       <ClientOnly>
@@ -40,14 +42,24 @@ const TripsPage = async () => {
 
   return (
     <ClientOnly>
+      <div className="mt-[6%]">
+        
       <TripsClient
         reservations={reservations}
         currentUser={currentUser}
       />
+
       <Trips_activity
         reservations={reservation_todo}
         currentUser={currentUser}
       />
+
+      <Trips_restaurant
+        reservations={reservation_restaurant}
+        currentUser={currentUser}
+      />
+      </div>
+     
     </ClientOnly>
   );
 }

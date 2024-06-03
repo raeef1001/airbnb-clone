@@ -108,7 +108,7 @@ const Home = async ({ searchParams }: HomeProps) => {
             />
           ))}
         </div>
-        <div className="pt-24 text-4xl font-bold mb-2">Ways to tour Your City</div>
+        {/* <div className="pt-24 text-4xl font-bold mb-2">Ways to tour Your City</div>
         <div>Book these experiences for a close-up look at those City.
         </div>
         <div 
@@ -131,7 +131,7 @@ const Home = async ({ searchParams }: HomeProps) => {
               data={listing}
             />
           ))}
-        </div>
+        </div> */}
         
       </Container>
     </ClientOnly>

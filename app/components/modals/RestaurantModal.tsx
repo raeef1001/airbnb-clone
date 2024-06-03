@@ -23,13 +23,12 @@ import Input from '../inputs/Input';
 import Heading from '../Heading';
 
 enum STEPS {
-  CATEGORY = 0,
-  LOCATION = 1,
-  INFO = 2,
-  IMAGES = 3,
-  DESCRIPTION = 4,
-  Food = 5,
-  PRICE = 6,
+  LOCATION = 0,
+  INFO = 1,
+  IMAGES = 2,
+  DESCRIPTION = 3,
+
+  PRICE = 4,
   
 }
 
@@ -38,7 +37,7 @@ const RestaurantModal = () => {
   const restaurantModal = useRestaurantModal();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState(STEPS.CATEGORY);
+  const [step, setStep] = useState(STEPS.LOCATION);
 
   const { 
     register, 
@@ -51,24 +50,20 @@ const RestaurantModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      category: '',
       location: null,
       guestCount: 1,
-      roomCount: 1,
-      bathroomCount: 1,
       imageSrc: '',
       price: 1,
       title: '',
       description: '',
-      Foood_list: [],
+     
     }
   });
 
   const location = watch('location');
-  const category = watch('category');
+
   const guestCount = watch('guestCount');
-  const roomCount = watch('roomCount');
-  const bathroomCount = watch('bathroomCount');
+
   const imageSrc = watch('imageSrc');
   const food_list = watch('Foood_list');
 
@@ -100,12 +95,12 @@ const RestaurantModal = () => {
     
     setIsLoading(true);
 
-    axios.post('/api/restaurant', data)
+    axios.post('/api/food', data)
     .then(() => {
       toast.success('Listing created!');
       router.refresh();
       reset();
-      setStep(STEPS.CATEGORY)
+      setStep(STEPS.LOCATION)
       restaurantModal.onClose();
     })
     .catch(() => {
@@ -125,7 +120,7 @@ const RestaurantModal = () => {
   }, [step]);
 
   const secondaryActionLabel = useMemo(() => {
-    if (step === STEPS.CATEGORY) {
+    if (step === STEPS.LOCATION) {
       return undefined
     }
 
@@ -135,49 +130,18 @@ const RestaurantModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Which of these best describes your place?"
-        subtitle="Pick a category"
+        title="Where is your place located?"
+        subtitle="Help guests find you!"
       />
-      <div 
-        className="
-          grid 
-          grid-cols-1 
-          md:grid-cols-2 
-          gap-3
-          max-h-[50vh]
-          overflow-y-auto
-        "
-      >
-        {categories.map((item) => (
-          <div key={item.label} className="col-span-1">
-            <CategoryInput
-              onClick={(category) => 
-                setCustomValue('category', category)}
-              selected={category === item.label}
-              label={item.label}
-              icon={item.icon}
-            />
-          </div>
-        ))}
-      </div>
+      <CountrySelect 
+        value={location} 
+        onChange={(value) => setCustomValue('location', value)} 
+      />
+      <Map center={location?.latlng} />
     </div>
-  )
+  );
 
-  if (step === STEPS.LOCATION) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading
-          title="Where is your place located?"
-          subtitle="Help guests find you!"
-        />
-        <CountrySelect 
-          value={location} 
-          onChange={(value) => setCustomValue('location', value)} 
-        />
-        <Map center={location?.latlng} />
-      </div>
-    );
-  }
+ 
 
   if (step === STEPS.INFO) {
     bodyContent = (
@@ -193,19 +157,7 @@ const RestaurantModal = () => {
           subtitle="How many guests do you allow?"
         />
         <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('roomCount', value)}
-          value={roomCount}
-          title="Rooms" 
-          subtitle="How many rooms do you have?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('bathroomCount', value)}
-          value={bathroomCount}
-          title="Bathrooms" 
-          subtitle="How many bathrooms do you have?"
-        />
+       
       </div>
     )
   }
@@ -252,36 +204,7 @@ const RestaurantModal = () => {
       </div>
     )
   }
-  if (step === STEPS.Food) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading
-          title="Add some food option to your place"
-          subtitle="What amenitis do you have?"
-        />
-        <Counter 
-          onChange={(value) => setCustomValue('Breakfast', value)}
-          value={guestCount}
-          title="breakfast" 
-          subtitle="Pricing for breakfast?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('lunch', value)}
-          value={roomCount}
-          title="lunch" 
-          subtitle="Pricing for Lunch?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('dinner', value)}
-          value={bathroomCount}
-          title="Dinner" 
-          subtitle="Pricing for Dinner?"
-        />
-      </div>
-    )
-  }
+  
   if (step === STEPS.PRICE) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -307,11 +230,11 @@ const RestaurantModal = () => {
     <Modal
       disabled={isLoading}
       isOpen={restaurantModal.isOpen}
-      title="List your home!"
+      title="List your Restaurant!"
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
+      secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
       onClose={restaurantModal.onClose}
       body={bodyContent}
     />

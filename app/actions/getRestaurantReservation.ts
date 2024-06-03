@@ -1,3 +1,4 @@
+// @ts-ignore
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
@@ -43,9 +44,9 @@ export default async function getRestaurantReservation(
       createdAt: reservation.createdAt.toISOString(),
       startDate: reservation.startDate.toISOString(),
       endDate: reservation.endDate.toISOString(),
-      todo: {
-        ...reservation.todo,
-        createdAt: reservation.todo.createdAt.toISOString(),
+      restaurant: {
+        ...reservation.restaurant,
+        createdAt: reservation.restaurant.createdAt.toISOString(),
       },
     }));
 

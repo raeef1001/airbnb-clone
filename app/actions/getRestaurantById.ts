@@ -2,37 +2,37 @@
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-  todo_id?: string;
+  restaurant_id?: string;
 }
 
 export default async function getRestaurantById(
-  { params }
+  { params}
 ) {
   try {
-    const { todo_id } = params;
+    const { restaurant_id } = params;
 
-    const todo = await prisma.restaurant.findUnique({
+    const restaurant = await prisma.restaurant.findUnique({
       where: {
-        id: todo_id,
+        id: restaurant_id,
       },
       include: {
         user: true
       }
     });
 
-    if (!todo) {
+    if (!restaurant) {
       return null;
     }
 
     return {
-      ...todo,
-      createdAt: todo.createdAt.toString(),
+      ...restaurant,
+      createdAt: restaurant.createdAt.toString(),
       user: {
-        ...todo.user,
-        createdAt: todo.user.createdAt.toString(),
-        updatedAt: todo.user.updatedAt.toString(),
+        ...restaurant.user,
+        createdAt: restaurant.user.createdAt.toString(),
+        updatedAt: restaurant.user.updatedAt.toString(),
         emailVerified: 
-          todo.user.emailVerified?.toString() || null,
+          restaurant.user.emailVerified?.toString() || null,
       }
     };
   } catch (error: any) {
