@@ -28,8 +28,8 @@ enum STEPS {
   INFO = 1,
   IMAGES = 2,
   DESCRIPTION = 3,
-  Food = 4,
-  PRICE = 5,
+  
+  PRICE = 4,
   
 }
 
@@ -221,36 +221,7 @@ const RentModal = () => {
       </div>
     )
   }
-  if (step === STEPS.Food) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading
-          title="Add some food option to your place"
-          subtitle="What amenitis do you have?"
-        />
-        <Counter 
-          onChange={(value) => setCustomValue('Breakfast', value)}
-          value={guestCount}
-          title="breakfast" 
-          subtitle="Pricing for breakfast?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('lunch', value)}
-          value={roomCount}
-          title="lunch" 
-          subtitle="Pricing for Lunch?"
-        />
-        <hr />
-        <Counter 
-          onChange={(value) => setCustomValue('dinner', value)}
-          value={bathroomCount}
-          title="Dinner" 
-          subtitle="Pricing for Dinner?"
-        />
-      </div>
-    )
-  }
+  
   if (step === STEPS.PRICE) {
     bodyContent = (
       <div className="flex flex-col gap-8">

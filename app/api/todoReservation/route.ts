@@ -25,7 +25,7 @@ export async function POST(
     return NextResponse.error();
   }
 
-  const listingAndReservation = await prisma.reservation_todo.update({
+  const listingAndReservation = await prisma.todo.update({
     where: {
       id: todo_id
     },
