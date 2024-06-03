@@ -1,23 +1,16 @@
-
-// @ts-ignore 
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import getTodoById from "@/app/actions/getTodoById";
-import getTodoReservation from "@/app/actions/getTodoReservation";
-
+import getRestaurantById from "@/app/actions/getRestaurantById";
+import getRestaurantReservation from "@/app/actions/getRestaurantReservation";
 import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
-
-import getrestauraById from "@/app/actions/getRestaurantById";
-import getRestaurantReservation from "@/app/actions/getRestaurantReservation";
 import FoodsingleClient from "./FoodsingleClient";
 
 interface IParams {
-  Todo_id?: string;
+  restaurant_id?: string;
 }
 
 const FoodsinglePage = async ({ params }: { params: IParams }) => {
-  console.log(params);
-  const listing = await getrestauraById(params);
+  const listing = await getRestaurantById(params);
   const reservations = await getRestaurantReservation(params);
   const currentUser = await getCurrentUser();
 
@@ -32,13 +25,12 @@ const FoodsinglePage = async ({ params }: { params: IParams }) => {
   return (
     <ClientOnly>
       <FoodsingleClient
-      restaurant_reservation={reservations}
+        restaurant_reservation={reservations}
         restaurant={listing}
-        
         currentUser={currentUser}
       />
     </ClientOnly>
   );
-}
- 
+};
+
 export default FoodsinglePage;
