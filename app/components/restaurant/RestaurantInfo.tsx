@@ -29,7 +29,7 @@ const RestaurantInfo: React.FC<ListingInfoProps> = ({
   user,
   description,
   guestCount,
-  category,
+
   locationValue,
 }) => {
   const { getByValue } = useCountries();

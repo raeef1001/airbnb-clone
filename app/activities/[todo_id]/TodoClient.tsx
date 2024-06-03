@@ -137,7 +137,7 @@ const TodoClient: React.FC<ListingClientProps> = ({
           >
             <TodoInfo
               user={Todo.user}
-              category={category}
+              
               description={Todo.description}
             
               guestCount={Todo.guestCount}

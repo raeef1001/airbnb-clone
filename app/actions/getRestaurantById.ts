@@ -5,13 +5,13 @@ interface IParams {
   restaurant_id?: string;
 }
 
-export default async function getRestaurantById(
-  { params}
+export default async function getrestauraById(
+  params: IParams
 ) {
   try {
     const { restaurant_id } = params;
 
-    const restaurant = await prisma.restaurant.findUnique({
+    const restaura = await prisma.restaurant.findUnique({
       where: {
         id: restaurant_id,
       },
@@ -20,19 +20,19 @@ export default async function getRestaurantById(
       }
     });
 
-    if (!restaurant) {
+    if (!restaura) {
       return null;
     }
 
     return {
-      ...restaurant,
-      createdAt: restaurant.createdAt.toString(),
+      ...restaura,
+      createdAt: restaura.createdAt.toString(),
       user: {
-        ...restaurant.user,
-        createdAt: restaurant.user.createdAt.toString(),
-        updatedAt: restaurant.user.updatedAt.toString(),
+        ...restaura.user,
+        createdAt: restaura.user.createdAt.toString(),
+        updatedAt: restaura.user.updatedAt.toString(),
         emailVerified: 
-          restaurant.user.emailVerified?.toString() || null,
+          restaura.user.emailVerified?.toString() || null,
       }
     };
   } catch (error: any) {

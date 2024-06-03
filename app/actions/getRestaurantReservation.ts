@@ -1,23 +1,21 @@
-// @ts-ignore
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-    restaurant_reservation_id?: string;
+  restaurant_reservation_id?: string;
   userId?: string;
   authorId?: string;
 }
 
 export default async function getRestaurantReservation(
   params: IParams
-
 ) {
   try {
-    const {  restaurant_reservation_id, userId, authorId } = params;
+    const { restaurant_reservation_id, userId, authorId } = params;
 
     const query: any = {};
         
-    if ( restaurant_reservation_id) {
-      query.restaurant_reservation_id =  restaurant_reservation_id;
+    if (restaurant_reservation_id) {
+      query.restaurant_reservation_id = restaurant_reservation_id;
     };
 
     if (userId) {
@@ -25,32 +23,32 @@ export default async function getRestaurantReservation(
     }
 
     if (authorId) {
-      query.todo = { userId: authorId };
+      query.listing = { userId: authorId };
     }
 
-    const reservations = await prisma.restaurant_reservation.findMany({
+    const restaurant_reservation = await prisma.restaurant_reservation.findMany({
       where: query,
       include: {
-        restaurant: true
+        listing: true
       },
       orderBy: {
         createdAt: 'desc'
       }
     });
 
-    const safeReservations = reservations.map(
+    const saferestaurant_reservation = restaurant_reservation.map(
       (reservation) => ({
       ...reservation,
       createdAt: reservation.createdAt.toISOString(),
       startDate: reservation.startDate.toISOString(),
       endDate: reservation.endDate.toISOString(),
-      restaurant: {
-        ...reservation.restaurant,
-        createdAt: reservation.restaurant.createdAt.toISOString(),
+      listing: {
+        ...reservation.listing,
+        createdAt: reservation.listing.createdAt.toISOString(),
       },
     }));
 
-    return safeReservations;
+    return saferestaurant_reservation;
   } catch (error: any) {
     throw new Error(error);
   }

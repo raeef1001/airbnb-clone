@@ -6,7 +6,7 @@ interface IParams {
 }
 
 export default async function getTodoById(
-  { params }
+  params: IParams
 ) {
   try {
     const { todo_id } = params;

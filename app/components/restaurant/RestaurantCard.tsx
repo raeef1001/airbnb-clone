@@ -76,7 +76,7 @@ const RestaurantCard: React.FC<ListingCardProps> = ({
 
   return (
     <div 
-      onClick={() => router.push(`/restaurant/${data.id}`)} 
+      onClick={() => router.push(`/foodsingle/${data.id}`)} 
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">

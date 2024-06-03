@@ -25,16 +25,16 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  Restaurant_Reservation?: SafeRestaurantReservation[];
-  Restaurant: SafeRestaurant & {
+  restaurant_reservation?: SafeRestaurantReservation[];
+  restaurant: SafeRestaurant & {
     user: SafeUser;
   };
   currentUser?: SafeUser | null;
 }
 
-const RestaurantClient: React.FC<ListingClientProps> = ({ 
-    Restaurant_Reservation = [], 
-    Restaurant, 
+const FoodsingleClient: React.FC<ListingClientProps> = ({ 
+    restaurant_reservation = [], 
+    restaurant, 
     currentUser
 }) => {
   const loginModal = useLoginModal();
@@ -43,7 +43,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
-    Restaurant_Reservation.forEach((reservation: any) => {
+    restaurant_reservation.forEach((reservation: any) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate)
@@ -53,15 +53,15 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
     });
 
     return dates;
-  }, [Restaurant_Reservation]);
+  }, [restaurant_reservation]);
 
-  const category = useMemo(() => {
-     return categories.find((items) => 
-      items.label === Restaurant.title);
-  }, [Restaurant.title]);
+  // const category = useMemo(() => {
+  //    return categories.find((items) => 
+  //     items.label === Todo.category);
+  // }, [Todo.category]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(Restaurant.price);
+  const [totalPrice, setTotalPrice] = useState(restaurant.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const onCreateReservation = useCallback(() => {
@@ -74,7 +74,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
-        Restaurant_id: Restaurant?.id
+        todo_id: restaurant?.id
       })
       .then(() => {
         toast.success('activity reserved!');
@@ -91,7 +91,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
   [
     totalPrice, 
     dateRange, 
-    Restaurant?.id,
+    restaurant?.id,
     router,
     currentUser,
     loginModal
@@ -104,28 +104,28 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
         dateRange.startDate
       );
       
-      if (dayCount && Restaurant.price) {
-        setTotalPrice(dayCount * Restaurant.price);
+      if (dayCount && restaurant.price) {
+        setTotalPrice(dayCount * restaurant.price);
       } else {
-        setTotalPrice(Restaurant.price);
+        setTotalPrice(restaurant.price);
       }
     }
-  }, [dateRange, Restaurant.price]);
+  }, [dateRange, restaurant.price]);
 
   return ( 
     <Container>
       <div 
         className="
           max-w-screen-lg 
-          mx-auto
+          mx-auto mt-[6%]
         "
       >
         <div className="flex flex-col gap-6">
           <TodoHead
-            title={Restaurant.title}
-            imageSrc={Restaurant.imageSrc}
-            locationValue={Restaurant.locationValue}
-            id={Restaurant.id}
+            title={restaurant.title}
+            imageSrc={restaurant.imageSrc}
+            locationValue={restaurant.locationValue}
+            id={restaurant.id}
             currentUser={currentUser}
           />
           <div 
@@ -138,13 +138,13 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
             "
           >
             <RestaurantInfo
-              user={Restaurant.user}
-              category={category}
-              description={Restaurant.description}
+              user={restaurant.user}
+              
+              description={restaurant.description}
             
-              guestCount={Restaurant.guestCount}
+              guestCount={restaurant.guestCount}
             
-              locationValue={Restaurant.locationValue}
+              locationValue={restaurant.locationValue}
             />
             <div 
               className="
@@ -155,7 +155,7 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
               "
             >
               <RestaurantReservation
-                price={Restaurant.price}
+                price={restaurant.price}
                 totalPrice={totalPrice}
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
@@ -171,4 +171,4 @@ const RestaurantClient: React.FC<ListingClientProps> = ({
    );
 }
  
-export default RestaurantClient;
+export default FoodsingleClient;

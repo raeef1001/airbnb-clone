@@ -13,10 +13,10 @@ interface IParams {
   Todo_id?: string;
 }
 
-const ActivityPage = async ({params}) => {
+const ActivityPage = async ({ params }: { params: IParams }) => {
 
-  const listing = await getTodoById({ params: params });
-  const reservations = await getTodoReservation({ params: params});
+  const listing = await getTodoById(params);
+  const reservations = await getTodoReservation(params);
   const currentUser = await getCurrentUser();
 
   if (!listing) {
